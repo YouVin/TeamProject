@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>강남대학교 지도</title>
+    <style>
+        #mapContainer {
+            text-align: center;
+        }
+
+        #mapSelector {
+            float: right;
+            margin-top: -30px;
+        }
+
+        #map1,
+        #map2,
+        #map3 {
+            width: 850px;
+            height: 450px;
+            margin: 30px auto;
+            display: none;
+        }
+
+       .transportation {
+        text-align: left;
+        margin-top: 20px;
+        margin-left: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: left;
+    }
+
+    .transportation img {
+        width:120px;
+        height:120px;
+        max-width: 130px;
+        max-height: 130px;
+    }
+
+    .transportation-text {
+    	margin-left: 30px;
+        text-align: left;
+    }
+    </style>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b1ba9ed07b936d5950b1537e570e2055"></script>
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzeimj8dMbNVmVmeEJ02R94wVpuGWObX4&libraries=places"></script>
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ougnepsqtx"></script>
+</head>
+<body>
+<h3 id="mapContainer">찾아 오시는 길</h3>
+
+<div id="mapContainer">
+    <select id="mapSelector" onchange="changeMap()">
+        <option value="google" selected>Google</option>
+        <option value="kakao">Kakao</option>
+        <option value="naver">Naver</option>
+    </select>
+
+    <div id="map1"></div>
+    <div id="map2"></div>
+    <div id="map3"></div>
+
+   <div class="transportation">
+    <img src="https://cdn.icon-icons.com/icons2/3181/PNG/512/bus_icon_194019.png" alt="버스 사진">
+    <div class="transportation-text">
+        <strong>버스로 오는 방법</strong><br>
+        <small>시내버스: 66-4번 66번 690번 820번 10번(강남대 입구 하차)</small><br>
+        <small>광역버스: 5001번 5003번 5000번 5600번 5005번 (강남대 입구 하차)</small><br>
+        <small>시외버스: 8864번 8839(강남대 입구 하차)</small>
+    </div>
+</div>
+<div class="transportation">
+    <img src="https://cdn-icons-png.flaticon.com/512/66/66273.png">
+    <div class="transportation-text">
+        <strong>지하철로 오는 방법</strong><br>
+        <small>에버라인 지하철 강남대 입구역 - 2번 출구 도보 10분</small>
+    </div>
+</div>
+
+<script>
+    // Google Map
+    var googleMap;
+    function initGoogleMap() {
+        var location = { lat: 37.277104, lng: 127.134201 };
+        var mapOptions = {
+            zoom: 15,
+            center: location
+        };
+
+        var map = new google.maps.Map(document.getElementById('map1'), mapOptions);
+
+        var marker = new google.maps.Marker({
+            position: location,
+            map: map
+        });
+
+        marker.addListener('click', function() {
+            var directionsUrl = 'https://www.google.com/maps/dir/?api=1&destination=' + location.lat + ',' + location.lng;
+            window.open(directionsUrl, '_blank');
+        });
+    }
+
+    // Kakao Map
+    var kakaoMap;
+    function initKakaoMap() {
+        kakaoMap = new kakao.maps.Map(document.getElementById('map2'), {
+            center: new kakao.maps.LatLng(37.277104, 127.134201),
+            level: 3
+        });
+
+        var kakaoMarkerPosition = new kakao.maps.LatLng(37.277104, 127.134201);
+        var kakaoMarker = new kakao.maps.Marker({
+            position: kakaoMarkerPosition,
+            map: kakaoMap
+        });
+
+        var kakaoInfoWindowContent = '<div style="padding:5px;">강남대학교 이공관<br><a href="https://map.kakao.com/link/map/강남대학교 이공관,37.277104,127.134201" style="color:blue" target="_blank">큰지도보기</a> <a href="https://map.kakao.com/link/to/강남대학교 이공관,37.277104,127.134201" style="color:blue" target="_blank">길찾기</a></div>';
+        var kakaoInfoWindowPosition = new kakao.maps.LatLng(37.277104, 127.134201);
+        var kakaoInfoWindow = new kakao.maps.InfoWindow({
+            position: kakaoInfoWindowPosition,
+            content: kakaoInfoWindowContent
+        });
+        kakaoInfoWindow.open(kakaoMap, kakaoMarker);
+    }
+
+    // Naver Map
+    var naverMap;
+    function initNaverMap() {
+        naverMap = new naver.maps.Map('map3', {
+            center: new naver.maps.LatLng(37.277104, 127.134201),
+            zoom: 15
+        });
+
+        var naverMarker = new naver.maps.Marker({
+            position: new naver.maps.LatLng(37.277104, 127.134201),
+            map: naverMap
+        });
+
+        naver.maps.Event.addListener(naverMarker, 'click', function() {
+            var infoWindow = new naver.maps.InfoWindow({
+                content: '<h4>강남대학교 이공관</h4><p>길찾기를 시작합니다.</p>'
+            });
+            infoWindow.open(naverMap, naverMarker);
+
+            var destination = new naver.maps.LatLng(37.277104, 127.134201);
+            var url = 'https://map.naver.com/v5/directions/-/14152510.454568248,4477811.058972007,%EA%B0%95%EB%82%A8%EB%8C%80%ED%95%99%EA%B5%90%EC%9D%B4%EA%B3%B5%EA%B4%80,19293038,PLACE_POI/-/transit?c=15,0,0,0,dh';
+            url = url.replace('DESTINATION_LATITUDE', destination.lat());
+            url = url.replace('DESTINATION_LONGITUDE', destination.lng());
+
+            infoWindow.setContent('<h4>강남대학교 이공관</h4><p><a href="' + url + '" target="_blank">길찾기</a></p>');
+        });
+    }
+
+    function changeMap() {
+        var mapSelector = document.getElementById("mapSelector");
+        var selectedMap = mapSelector.options[mapSelector.selectedIndex].value;
+
+        switch (selectedMap) {
+            case 'kakao':
+                document.getElementById('map1').style.display = 'none';
+                document.getElementById('map2').style.display = 'block';
+                document.getElementById('map3').style.display = 'none';
+                initKakaoMap();
+                break;
+            case 'google':
+                document.getElementById('map1').style.display = 'block';
+                document.getElementById('map2').style.display = 'none';
+                document.getElementById('map3').style.display = 'none';
+                initGoogleMap();
+                break;
+            case 'naver':
+                document.getElementById('map1').style.display = 'none';
+                document.getElementById('map2').style.display = 'none';
+                document.getElementById('map3').style.display = 'block';
+                initNaverMap();
+                break;
+        }
+    }
+
+    // Initialize the maps when the page is loaded
+    window.addEventListener('load', function() {
+        initGoogleMap(); // Set Google Map as the initial map
+        document.getElementById('mapSelector').value = 'google'; // Set default value of dropdown to 'google'
+    });
+</script>
+</body>
+</html>

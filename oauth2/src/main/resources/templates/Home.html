@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>강남대학교</title>
+    <style>
+        /* 로고 스타일 */
+        .logo {
+            text-align: center;
+            font-size: 40px; /* 로고 타이틀의 크기 조정 */
+            font-weight: bold;
+            margin-top: 50px;
+        }
+        
+        /* 로그아웃 버튼 스타일 */
+        .logout-btn {
+            text-align: left;
+            margin-top: 20px;
+        margin-left: 40px;
+        border: none; /* 버튼 테두리 제거 */
+        background-color: transparent; /* 배경색 제거 */
+        color: #FFF; /* 텍스트 색상 설정 */
+        text-decoration: none; /* 텍스트 밑줄 제거 */
+        cursor: pointer; /* 커서 모양 변경 */
+        font-weight: bold;
+        font-size: 25px; /* 로고 타이틀의 크기 조정 */
+        }
+        
+        /* 버튼 스타일 */
+        .button {
+            display: inline-block;
+            margin-right:5px;
+            border: none; /* 버튼 테두리 제거 */
+       		background-color: transparent; /* 배경색 제거 */
+        	text-decoration: none; /* 텍스트 밑줄 제거 */
+        	cursor: pointer; /* 커서 모양 변경 */
+            margin-right: 40px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            font-size: 25px; /* 로고 타이틀의 크기 조정 */
+        }
+        
+        /* 게시판 버튼 스타일 */
+        .board-btn {
+        text-align: right;
+        margin-top: 200px;
+        border: none; /* 버튼 테두리 제거 */
+        background-color: transparent; /* 배경색 제거 */
+
+        }
+        body {
+        background-image: url("https://i.namu.wiki/i/k30UE2v3qj8QzmmJ0ICFRSaJEq1qa-d6V1p6fASzXgQQwrF3Xx0-Wwd6G7q-XUknoyNw88HmjYwYLsGfT2orlA.webp");
+        background-repeat: no-repeat;
+        background-size: cover; 
+        background-position: center center;
+        background-attachment: fixed;
+         overflow: hidden;
+        height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">
+        강남대학교
+    </div>
+    
+    <div class="logout-btn">
+        <a href="/logout" class="button">Logout</a>
+    </div>
+    
+    <div class="board-btn">
+        <a href="/board" class="button">게시판</a>
+        <a href="/map" class="button">찾아오는 길</a>
+    </div>
+</body>
+</html>
